@@ -1,0 +1,214 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #fff; /* 頁面其餘沒動畫的地方設定為白色 */
+  overflow: hidden; /* 全螢幕時禁止滾動 */
+}
+
+canvas {
+  display: block;
+  position: relative;
+  z-index: 1; /* 確保 canvas 在側選單之下 */
+}
+
+/* 主頁標題 */
+#main-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 60px;
+  /* Fallback for browsers that don't support background-clip */
+  color: #42a5f5; /* 設定為純藍色 */
+  z-index: 2; /* 確保標題在 canvas 之上 */
+  white-space: nowrap; /* 防止文字換行 */
+  display: flex; /* 確保 span 正確並排 */
+}
+
+/* 移除舊的動畫 */
+#main-title span {
+  opacity: 0; /* 初始狀態為透明 */
+  animation: fadeIn 1s infinite; /* 應用淡入動畫並無限循環 */
+}
+
+/* 定義淡入動畫 */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* 為每個字設定不同的延遲時間 */
+#main-title span:nth-child(1) {
+  animation-delay: 3.2s;
+}
+#main-title span:nth-child(2) {
+  animation-delay: 2.8s;
+}
+#main-title span:nth-child(3) {
+  animation-delay: 2.4s;
+}
+#main-title span:nth-child(4) {
+  animation-delay: 2.0s;
+}
+#main-title span:nth-child(5) {
+  animation-delay: 1.6s;
+}
+#main-title span:nth-child(6) {
+  animation-delay: 1.2s;
+}
+#main-title span:nth-child(7) {
+  animation-delay: 0.8s;
+}
+#main-title span:nth-child(8) {
+  animation-delay: 0.4s;
+}
+#main-title span:nth-child(9) {
+  animation-delay: 0.0s;
+}
+#main-title span:nth-child(10) {
+  animation-delay: 0.0s;
+}
+#main-title span:nth-child(11) {
+  animation-delay: 0.4s;
+}
+#main-title span:nth-child(12) {
+  animation-delay: 0.8s;
+}
+#main-title span:nth-child(13) {
+  animation-delay: 1.2s;
+}
+#main-title span:nth-child(14) {
+  animation-delay: 1.6s;
+}
+#main-title span:nth-child(15) {
+  animation-delay: 2.0s;
+}
+#main-title span:nth-child(16) {
+  animation-delay: 2.4s;
+}
+#main-title span:nth-child(17) {
+  animation-delay: 2.8s;
+}
+#main-title span:nth-child(18) {
+  animation-delay: 3.2s;
+}
+
+/* 左側 100px 偵測區（隱形） */
+#left-sensor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100px;
+  height: 100vh;
+  z-index: 9998;
+  background: transparent;
+}
+
+/* 側選單 */
+#side-menu {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 260px;
+  height: 100vh;
+  transform: translateX(-100%); /* 隱藏在畫面外 */
+  transition: transform 0.45s ease;
+  background: rgba(255,255,255,0.98);
+  box-shadow: 2px 0 12px rgba(0,0,0,0.18);
+  z-index: 10000; /* 高於 canvas */
+  display: flex;
+  align-items: center;
+}
+
+/* 當滑鼠進入左側偵測區或停留在選單上時滑出 */
+#left-sensor:hover ~ #side-menu,
+#side-menu:hover {
+  transform: translateX(0);
+}
+
+#side-menu ul {
+  list-style: none;
+  padding: 0 24px;
+  margin: 0;
+  width: 100%;
+}
+
+#side-menu li {
+  margin: 18px 0;
+}
+
+#side-menu a {
+  color: #000;
+  text-decoration: none;
+  font-size: 32px; /* 使用者要求的字型大小 */
+  display: block;
+  padding: 6px 0;
+}
+
+#side-menu a:focus,
+#side-menu a:hover {
+  text-decoration: underline;
+}
+
+/* iframe overlay */
+#iframe-overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.6);
+  z-index: 10050; /* 高於側選單與 canvas */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+/* active state */
+#iframe-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.iframe-container {
+  width: 70%;
+  height: 85%;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.iframe-container iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+#iframe-close {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 2;
+}

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sketch</title>
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <style>
+      #iframe-close {
+        color: black;
+        border: none;
+        background: transparent;
+      }
+      #page-header {
+        color: #7b2cbf;
+        font-size: 30px;
+        position: absolute;
+        top: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2;
+      }
+      .cursor-star {
+        position: fixed; /* 固定在視窗上 */
+        pointer-events: none; /* 讓滑鼠事件可以穿透星星 */
+        z-index: 9999; /* 確保星星在大部分元素之上 */
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+        transition: opacity 0.5s ease-out;
+        opacity: 0;
+      }
+      .cursor-star.visible {
+        opacity: 1;
+      }
+   </style>
+    <script src="libraries/p5.min.js"></script>
+    <script src="libraries/p5.sound.min.js"></script>
+  </head>
+
+  <body>
+    <div id="page-header">xxxxxxxx308  黃O瑄</div>
+    <div id="main-title">
+      <span>˜</span>
+      <span>”</span>
+      <span>*</span>
+      <span>°</span>
+      <span>•</span>
+      <span>.</span>
+      <span> </span>
+      <span>淡</span>
+      <span>江</span>
+      <span>大</span>
+      <span>學</span>
+      <span> </span>
+      <span>.</span>
+      <span>•</span>
+      <span>°</span>
+      <span>*</span>
+      <span>”</span>
+      <span>˜</span>
+    </div>
+    <div id="star-container">
+      <span class="cursor-star" style="font-size: 24px; color: #fff;">☆</span>
+      <span class="cursor-star" style="font-size: 22px; color: #fefae0;">☆</span>
+      <span class="cursor-star" style="font-size: 20px; color: #faedcd;">☆</span>
+      <span class="cursor-star" style="font-size: 18px; color: #fefae0;">☆</span>
+      <span class="cursor-star" style="font-size: 16px; color: #faedcd;">☆</span>
+      <span class="cursor-star" style="font-size: 14px; color: #fefae0;">☆</span>
+      <span class="cursor-star" style="font-size: 12px; color: #faedcd;">☆</span>
+      <span class="cursor-star" style="font-size: 10px; color: #fefae0;">☆</span>
+      <span class="cursor-star" style="font-size: 8px; color: #faedcd;">☆</span>
+      <span class="cursor-star" style="font-size: 6px; color: #fefae0;">☆</span>
+    </div>
+    <div id="left-sensor" aria-hidden="true"></div>
+    <nav id="side-menu" aria-label="側選單">
+      <ul>
+        <li><a href="#" id="open-first">第一單元作品</a></li>
+        <li><a href="#" id="open-lecture">第一單元講義</a></li>
+        <li><a href="#" id="open-quiz">測驗系統</a></li>
+        <li><a href="#" id="open-quiz-notes">測驗筆記</a></li>
+        <li><a href="#" id="open-work-notes">作品筆記</a></li>
+        <li><a href="#" id="open-home">回到首頁</a></li>
+      </ul>
+    </nav>
+    <script src="sketch.js"></script>
+
+    <!-- IFrame overlay for 第一單元作品 -->
+    <div id="iframe-overlay" aria-hidden="true">
+      <div class="iframe-container" role="dialog" aria-modal="true">
+        <button id="iframe-close" aria-label="關閉">✕</button>
+        <iframe id="content-iframe" src="" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <script>
+      (function(){
+        const openBtn = document.getElementById('open-first');
+        const openLectureBtn = document.getElementById('open-lecture');
+        const overlay = document.getElementById('iframe-overlay');
+        const iframe = document.getElementById('content-iframe');
+        const closeBtn = document.getElementById('iframe-close');
+        const TARGET_URL_FIRST = 'https://yuanlin462-maker.github.io/20251023/';
+        const TARGET_URL_LECTURE= 'https://hackmd.io/@7rBboAa3RqOGLEs-AyYk_w/rJZIclBseg';
+        const TARGET_URL_QUIZ= 'https://yuanlin462-maker.github.io/202511111/';
+        const TARGET_URL_QUIZ_NOTES = 'https://hackmd.io/@ZS2vccHhS0iTx2-433cL8Q/r1xNbR0kWx';
+
+
+        function openIframe(url) {
+          iframe.src = url;
+          overlay.classList.add('active');
+          overlay.setAttribute('aria-hidden', 'false');
+          // disable scrolling in page (redundant but safe)
+          document.body.style.overflow = 'hidden';
+        }
+
+        function closeIframe() {
+          overlay.classList.remove('active');
+          overlay.setAttribute('aria-hidden', 'true');
+          // unload iframe to stop audio/video
+          try { iframe.src = 'about:blank'; } catch(e) {}
+          document.body.style.overflow = '';
+        }
+
+        openBtn.addEventListener('click', function(e){
+          e.preventDefault();
+          openIframe(TARGET_URL_FIRST);
+        });
+
+        openLectureBtn.addEventListener('click', function(e){
+          e.preventDefault();
+          openIframe(TARGET_URL_LECTURE);
+        });
+
+        closeBtn.addEventListener('click', function(e){
+          e.stopPropagation();
+          closeIframe();
+        });
+
+        const openQuizBtn = document.getElementById('open-quiz');
+        openQuizBtn.addEventListener('click', function(e){
+          e.preventDefault();
+          openIframe(TARGET_URL_QUIZ);
+        });
+
+        const openQuizNotesBtn = document.getElementById('open-quiz-notes');
+        openQuizNotesBtn.addEventListener('click', function(e){
+          e.preventDefault();
+          openIframe(TARGET_URL_QUIZ_NOTES);
+        });
+
+        // click outside the container closes
+        overlay.addEventListener('click', function(e){
+          if (e.target === overlay) closeIframe();
+        });
+
+        // Esc closes
+        window.addEventListener('keydown', function(e){
+          if (e.key === 'Escape' && overlay.classList.contains('active')) {
+            closeIframe();
+          }
+        });
+      })();
+    </script>
+    <script>
+      (function() {
+        const stars = document.querySelectorAll('.cursor-star');
+        const positions = Array.from({ length: stars.length }, () => ({ x: 0, y: 0 }));
+        const mouse = { x: 0, y: 0 };
+        let isVisible = false;
+        let hideTimeout;
+
+        // 監聽滑鼠移動事件
+        window.addEventListener('mousemove', function(e) {
+          mouse.x = e.clientX;
+          mouse.y = e.clientY;
+
+          if (!isVisible) {
+            isVisible = true;
+            stars.forEach(star => star.classList.add('visible'));
+            positions.forEach(p => {
+              p.x = mouse.x;
+              p.y = mouse.y;
+            });
+          }
+
+          clearTimeout(hideTimeout);
+          hideTimeout = setTimeout(() => {
+            isVisible = false;
+            stars.forEach(star => star.classList.remove('visible'));
+          }, 500);
+        });
+
+        function animate() {
+          let nextX = mouse.x;
+          let nextY = mouse.y;
+
+          positions.forEach((p, i) => {
+            p.x += (nextX - p.x) * 0.3;
+            p.y += (nextY - p.y) * 0.3;
+            stars[i].style.transform = `translate(${p.x - stars[i].offsetWidth / 2}px, ${p.y - stars[i].offsetHeight / 2}px)`;
+            nextX = p.x;
+            nextY = p.y;
+          });
+
+          requestAnimationFrame(animate);
+        }
+
+        animate();
+      })();
+    </script>
+  </body>
+</html>
